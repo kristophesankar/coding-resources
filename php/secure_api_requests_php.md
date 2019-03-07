@@ -13,3 +13,23 @@ https://stackoverflow.com/questions/23533003/only-accept-ajax-get-or-post-reques
 + Check if the request was sent through AJAX on the server.
 + Create a hash of the token using the received token hash and compare.
 + If there is a match, congrats! The request has come from a verified source.
+
+### Client Page
+
+#### Create a token in PHP and hash it
+
+```php
+
+<?php
+  //
+  session_start();
+  $hashed='';
+  $_SESSION['token'] = microtime();
+  if (defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH) {
+      $salt = '$2y$11$' . substr(md5(uniqid(mt_rand(), true)), 0, 22);
+      $hashed = crypt($_SESSION['token'], $salt);
+  }
+
+?>
+
+```
