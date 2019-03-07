@@ -14,7 +14,7 @@ https://stackoverflow.com/questions/23533003/only-accept-ajax-get-or-post-reques
 + Create a hash of the token using the received token hash and compare.
 + If there is a match, congrats! The request has come from a verified source.
 
-### Client Page
+### Client
 
 #### Create a token in PHP and apply a hashing algorithm to it:
 
@@ -43,5 +43,30 @@ $.ajax({
   },
   success: function (data) {}
 });
+
+```
+
+### Server
+
+####Check if the request was sent through AJAX on the server:
+
+```php
+
+if ( !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+    && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) {
+  // request was sent through AJAX
+}
+
+```
+
+####Create a hash of the token using the received token hash and compare.
+
+```php
+
+session_start();
+if(crypt($_SESSION['token'], $_POST['action']) == $_POST['action']){
+  // Hashed string matches. Request came from client.
+  echo $_POST['q'];
+}
 
 ```
